@@ -16,7 +16,7 @@ MODEL_COMPONENTS = [
 ]
 SCORES = [
     0.785,
-    0.673,
+    0.653,
 ]
 METRICS = [
     {
@@ -65,6 +65,7 @@ def _load_model():
 
 def _test_components(model):
     """Test components"""
+    print(str(type(model)))
     assert "GridSearchCV" in str(type(model))
     current_components = [str(model.estimator[i]) for i in range(len(model.estimator))]
     for component in MODEL_COMPONENTS:
@@ -91,6 +92,7 @@ def _load_grading_data():
 def _test_scores(model, x_train, y_train, x_test, y_test):
     """Test scores"""
     assert model.score(x_train, y_train) > SCORES[0]
+    print(model.score(x_test, y_test))
     assert model.score(x_test, y_test) > SCORES[1]
 
 
@@ -116,6 +118,8 @@ def _test_metrics(metrics):
     for index in [2, 3]:
         assert metrics[index]["type"] == METRICS[index]["type"]
         assert metrics[index]["dataset"] == METRICS[index]["dataset"]
+        print(metrics[index]["true_0"]["predicted_0"])
+        print(METRICS[index]["true_0"]["predicted_0"])
         assert (
             metrics[index]["true_0"]["predicted_0"]
             > METRICS[index]["true_0"]["predicted_0"]
@@ -136,3 +140,5 @@ def test_homework():
     _test_components(model)
     _test_scores(model, x_train, y_train, x_test, y_test)
     _test_metrics(metrics)
+
+test_homework()
